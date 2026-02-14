@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Event Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+   
+    <link rel="stylesheet" href="style.css">
+           
+</head>
+
+<body>
+
+<h1> Smart Event Dashboard</h1>
+
+
+<div id="main-container">
+
+    
+    <div class="card">
+        <h3>Add New Event</h3>
+
+        <form id="eventForm">
+            <label>Event Title</label>
+            <input type="text" id="eventTitle" required>
+
+            <label>Event Date</label>
+            <input type="date" id="eventDate" required>
+
+            <label>Category</label>
+            <select id="eventCategory">
+                <option>Conference</option>
+                <option>Webinar</option>
+                <option>Meetup</option>
+                <option>Workshop</option>
+                <option>Social</option>
+            </select>
+
+            <label>Description</label>
+            <textarea id="eventDescription"></textarea>
+
+            <button type="submit">Add Event</button>
+        </form>
+    </div>
+
+    
+    <div class="card">
+        <h3>My Events</h3>
+
+        <div class="actions">
+            <button id="clearBtn">Clear All Events</button>
+            <button id="sampleBtn">Add Sample Events</button>
+        </div>
+
+        <div id="eventContainer">
+            <p>No events yet. Add your first event!</p>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="card" style="max-width:1000px;margin:20px auto;">
+    <h3>DOM Manipulation Demo</h3>
+    <input type="text" id="keyInput" placeholder="Press any key">
+    <p id="keyOutput">You Pressed: -</p>
+</div>
+
+
+<script>
+
+const form = document.getElementById("eventForm");
+const eventContainer = document.getElementById("eventContainer");
+const clearBtn = document.getElementById("clearBtn");
+const sampleBtn = document.getElementById("sampleBtn");
+
+let isEmpty = true;
+
+
+form.addEventListener("submit", function(e){
+    e.preventDefault();
+
+    if(isEmpty){
+        eventContainer.innerHTML = "";
+        isEmpty = false;
+    }
+
+    createEventCard(
+        eventTitle.value,
+        eventDate.value,
+        eventCategory.value,
+        eventDescription.value
+    );
+
+    form.reset();
+});
+
+
+eventContainer.addEventListener("click", function(e){
+    if(e.target.classList.contains("delete-btn")){
+        e.target.parentElement.remove();
+    }
+});
+
+
+function createEventCard(title, date, category, desc){
+    const card = document.createElement("div");
+    card.className = "event-card";
+
+    card.innerHTML = `
+        <button class="delete-btn">X</button>
+        <h4>${title}</h4>
+        <small>${date} | ${category}</small>
+        <p>${desc}</p>
+    `;
+
+    eventContainer.append(card);
+}
+
+
+clearBtn.addEventListener("click", function(){
+    eventContainer.innerHTML = "<p>No events yet. Add your first event!</p>";
+    isEmpty = true;
+});
+
+
+sampleBtn.addEventListener("click", function(){
+    eventContainer.innerHTML = "";
+    isEmpty = false;
+
+    createEventCard("Tech Conference", "2026-03-10", "Conference", "Annual tech event");
+    createEventCard("Webinar on JS", "2026-03-15", "Webinar", "Advanced DOM concepts");
+});
+
+
+document.querySelector("#keyInput").addEventListener("keydown", function(e){
+    document.querySelector("#keyOutput").innerText =
+        "You Pressed: " + e.key;
+});
+</script>
+
+</body>
+</html>
